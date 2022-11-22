@@ -12,15 +12,12 @@ export default class UserService {
     return this.userModel.create(user);
   }
   
-  public generateToken(user: IUserToken) {
-    const payload = { username: user.username,
-      classe: user.classe,
-      level: user.level,
-      password: user.password };
-    return this.jwt.sign(
-      payload, 
-      process.env.JWT_SECRET as string,
-      { algorithm: 'HS256', expiresIn: '1d' },
-    );
+  public async generateToken(user: IUserToken) {
+    return this.jwt
+      .sign(
+        { id: user.id, username: user.username }, 
+        process.env.JWT_SECRET as string, 
+        { algorithm: 'HS256', expiresIn: '7d' },
+      );
   }
 }
